@@ -70,7 +70,8 @@ function Chart({ coinId }: ChartProps) {
             colors: ["#0fbcf9"],
             tooltip: {
               y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
+                formatter: (value) =>
+                  `$ ${Number(value.toFixed(2)).toLocaleString()}`,
               },
             },
           }}
