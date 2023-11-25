@@ -189,7 +189,7 @@ function Coin() {
               <span>
                 $
                 {Number(
-                  tickersData?.quotes.USD.price.toFixed(3)
+                  tickersData?.quotes?.USD?.price.toFixed(3)
                 ).toLocaleString()}
               </span>
             </OverviewItem>
