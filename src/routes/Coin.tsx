@@ -10,8 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
-import Chart from "./Chart";
-import Price from "./Price";
+import LineChart from "./LineChart";
+import CandleStickChart from "./CandleStickChart";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -148,8 +148,8 @@ interface ICoinProps {
 function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-  const priceMatch = useRouteMatch("/:coinId/price");
-  const chartMatch = useRouteMatch("/:coinId/chart");
+  const candleStickMatch = useRouteMatch("/:coinId/candle-stick");
+  const lineMatch = useRouteMatch("/:coinId/line");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
     () => fetchCoinInfo(coinId)
@@ -211,20 +211,20 @@ function Coin({ isDark }: ICoinProps) {
           </Overview>
 
           <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+            <Tab isActive={lineMatch !== null}>
+              <Link to={`/${coinId}/line`}>Chart</Link>
             </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+            <Tab isActive={candleStickMatch !== null}>
+              <Link to={`/${coinId}/candle-stick`}>Price</Link>
             </Tab>
           </Tabs>
 
           <Switch>
-            <Route path={`/:coinId/price`}>
-              <Price />
+            <Route path={`/:coinId/candle-stick`}>
+              <CandleStickChart isDark={isDark} coinId={coinId} />
             </Route>
-            <Route path={`/:coinId/chart`}>
-              <Chart isDark={isDark} coinId={coinId} />
+            <Route path={`/:coinId/line`}>
+              <LineChart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>
