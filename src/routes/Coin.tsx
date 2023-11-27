@@ -81,6 +81,25 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
+const Button = styled.button`
+  background-color: rgba(0, 0, 0, 0.5);
+  color: ${(props) => props.theme.textColor};
+  border-radius: 15px;
+  margin-bottom: 10px;
+  border: none;
+  a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: color 0.2s ease-in;
+  }
+  &:hover {
+    a {
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
+`;
+
 interface RouteParams {
   coinId: string;
 }
@@ -179,6 +198,9 @@ function Coin({ isDark }: ICoinProps) {
         <Loader>Loading...</Loader>
       ) : (
         <>
+          <Button>
+            <Link to={"/"}>Home &rarr;</Link>
+          </Button>
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
@@ -198,6 +220,7 @@ function Coin({ isDark }: ICoinProps) {
               </span>
             </OverviewItem>
           </Overview>
+
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
@@ -212,10 +235,10 @@ function Coin({ isDark }: ICoinProps) {
 
           <Tabs>
             <Tab isActive={lineMatch !== null}>
-              <Link to={`/${coinId}/line`}>Chart</Link>
+              <Link to={`/${coinId}/line`}>Line Chart</Link>
             </Tab>
             <Tab isActive={candleStickMatch !== null}>
-              <Link to={`/${coinId}/candle-stick`}>Price</Link>
+              <Link to={`/${coinId}/candle-stick`}>Candlestick Chart</Link>
             </Tab>
           </Tabs>
 
