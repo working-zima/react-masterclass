@@ -21,7 +21,6 @@ const Container = styled.div`
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
   const isNewCategory = useRecoilValue(isNewCategorySelector);
-  console.log(`ToDoList: `, isNewCategory);
 
   return (
     <div>

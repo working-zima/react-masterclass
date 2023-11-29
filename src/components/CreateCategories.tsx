@@ -17,8 +17,6 @@ function CreateCategories() {
     setValue("newCategory", "");
   };
 
-  console.log(`CreateCategories: `, customCategories);
-
   return (
     <form onSubmit={handleSubmit(handleAddCategory)}>
       <input
