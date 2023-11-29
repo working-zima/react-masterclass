@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { customCategoriesState } from "./atoms";
 
 interface ICategoriesForm {
@@ -7,9 +7,7 @@ interface ICategoriesForm {
 }
 
 function CreateCategories() {
-  const [customCategories, setCustomCategories] = useRecoilState(
-    customCategoriesState
-  );
+  const setCustomCategories = useSetRecoilState(customCategoriesState);
   const { register, handleSubmit, setValue } = useForm<ICategoriesForm>();
 
   const handleAddCategory = ({ newCategory }: ICategoriesForm) => {
