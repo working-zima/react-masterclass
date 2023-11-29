@@ -1,9 +1,10 @@
 import { useRecoilValue } from "recoil";
-import { toDoSelector } from "./atoms";
+import { isNewCategorySelector, toDoSelector } from "./atoms";
 import styled from "styled-components";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import SelectCategories from "./SelectCategories";
+import CreateCategories from "./CreateCategories";
 
 const Title = styled.div`
   display: flex;
@@ -19,12 +20,14 @@ const Container = styled.div`
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
+  const isNewCategory = useRecoilValue(isNewCategorySelector);
+  console.log(`ToDoList: `, isNewCategory);
 
   return (
     <div>
       <Title>To Dos</Title>
       <Container>
-        <CreateToDo />
+        {isNewCategory ? <CreateCategories /> : <CreateToDo />}
         <SelectCategories />
       </Container>
       <Container>
