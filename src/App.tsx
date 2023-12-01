@@ -8,6 +8,7 @@ const Wrapper = styled(motion.div)`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-direction: column;
 `;
 
 const Grid = styled.div`
@@ -18,10 +19,25 @@ const Grid = styled.div`
 `;
 
 const Box = styled(motion.div)`
+  height: 200px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const Button = styled(motion.button)`
+  height: 30px;
+  width: 55px;
+  position: absolute;
+  top: 85%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+  color: #1114ac;
+  background-color: white;
 `;
 
 const Overlay = styled(motion.div)`
@@ -33,6 +49,12 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
+const Circle = styled(motion.div)`
+  background-color: white;
+  height: 100px;
+  width: 100px;
+`;
+
 const boxVariants = {
   hover1: { scale: 1.1, x: -17, y: -10 },
   hover2: { scale: 1.1, x: 17, y: -10 },
@@ -40,8 +62,15 @@ const boxVariants = {
   hover4: { scale: 1.1, x: 17, y: 10 },
 };
 
+const buttonVariants = {
+  click: { scale: 1.2, color: "red" },
+};
+
 function App() {
   const [id, setId] = useState<null | string>(null);
+  const [clicked, setClicked] = useState(false);
+
+  const toggleClicked = () => setClicked((prev) => !prev);
 
   return (
     <Wrapper>
@@ -54,9 +83,20 @@ function App() {
             onClick={() => setId(n)}
             key={n}
             layoutId={n}
-          />
+          >
+            {(n === "2" && !clicked) || (n === "3" && clicked) ? (
+              <Circle layoutId="circle" style={{ borderRadius: 50 }} />
+            ) : null}
+          </Box>
         ))}
       </Grid>
+      <Button
+        variants={buttonVariants}
+        whileTap="click"
+        onClick={toggleClicked}
+      >
+        Switch
+      </Button>
       <AnimatePresence>
         {id ? (
           <Overlay
