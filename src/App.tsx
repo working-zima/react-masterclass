@@ -36,7 +36,6 @@ const Button = styled(motion.button)`
   border: none;
   border-radius: 5px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
-  color: #1114ac;
   background-color: white;
 `;
 
@@ -51,8 +50,8 @@ const Overlay = styled(motion.div)`
 
 const Circle = styled(motion.div)`
   background-color: white;
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
 `;
 
 const boxVariants = {
@@ -60,10 +59,6 @@ const boxVariants = {
   hover2: { scale: 1.1, x: 17, y: -10 },
   hover3: { scale: 1.1, x: -17, y: 10 },
   hover4: { scale: 1.1, x: 17, y: 10 },
-};
-
-const buttonVariants = {
-  click: { scale: 1.2, color: "red" },
 };
 
 function App() {
@@ -90,13 +85,24 @@ function App() {
           </Box>
         ))}
       </Grid>
-      <Button
-        variants={buttonVariants}
-        whileTap="click"
-        onClick={toggleClicked}
-      >
-        Switch
-      </Button>
+      {!clicked ? (
+        <Button
+          layoutId="switch"
+          style={{ scale: 1, color: "#292fa7" }}
+          onClick={toggleClicked}
+        >
+          Switch
+        </Button>
+      ) : null}
+      {clicked ? (
+        <Button
+          layoutId="switch"
+          style={{ scale: 1.2, color: "#e60606" }}
+          onClick={toggleClicked}
+        >
+          Switch
+        </Button>
+      ) : null}
       <AnimatePresence>
         {id ? (
           <Overlay
