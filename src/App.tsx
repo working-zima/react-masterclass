@@ -33,6 +33,13 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
+const boxVariants = {
+  hover1: { scale: 1.1, x: -17, y: -10 },
+  hover2: { scale: 1.1, x: 17, y: -10 },
+  hover3: { scale: 1.1, x: -17, y: 10 },
+  hover4: { scale: 1.1, x: 17, y: 10 },
+};
+
 function App() {
   const [id, setId] = useState<null | string>(null);
 
@@ -40,7 +47,14 @@ function App() {
     <Wrapper>
       <Grid>
         {["1", "2", "3", "4"].map((n) => (
-          <Box onClick={() => setId(n)} key={n} layoutId={n} />
+          <Box
+            custom={n}
+            variants={boxVariants}
+            whileHover={`hover${n}`}
+            onClick={() => setId(n)}
+            key={n}
+            layoutId={n}
+          />
         ))}
       </Grid>
       <AnimatePresence>
