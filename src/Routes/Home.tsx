@@ -1,12 +1,13 @@
 import { useQuery } from "react-query";
-import { IGetMoviesResult, getMovies } from "../api";
 import styled from "styled-components";
-import { makeImagePath } from "../utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { getMovies, IGetMoviesResult } from "../api";
+import { makeImagePath } from "../utils";
 import { useState } from "react";
 
 const Wrapper = styled.div`
   background: black;
+  padding-bottom: 200px;
 `;
 
 const Loader = styled.div`
@@ -16,14 +17,15 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ $bgPhoto: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)),
-    url(${(props) => props.bgPhoto});
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+    url(${(props) => props.$bgPhoto});
+  background-size: cover;
 `;
 
 const Title = styled.h2`
@@ -49,56 +51,56 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgPhoto: string }>`
+const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
-  color: red;
   font-size: 66px;
 `;
 
 const rowVariants = {
   hidden: {
-    x: window.outerWidth + 10,
+    x: window.outerWidth + 5,
   },
   visible: {
     x: 0,
   },
   exit: {
-    x: -window.outerWidth - 10,
+    x: -window.outerWidth - 5,
   },
 };
 
 const offset = 6;
 
 function Home() {
-  const [index, setIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
   );
-
-  const increaseIndex = () => {
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const incraseIndex = () => {
     if (data) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovie = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      const totalMovies = data.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
-
   return (
     <Wrapper>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+          <Banner
+            onClick={incraseIndex}
+            $bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+          >
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
@@ -118,7 +120,7 @@ function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
                     />
                   ))}
               </Row>
