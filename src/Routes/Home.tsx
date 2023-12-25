@@ -58,6 +58,12 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-position: center center;
   height: 200px;
   font-size: 66px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
 const rowVariants = {
@@ -72,15 +78,25 @@ const rowVariants = {
   },
 };
 
+const boxVariants = {
+  normal: { scale: 1 },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: { delay: 0.5, duration: 0.3, type: "tween" },
+  },
+};
+
 const offset = 6;
 
 function Home() {
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
   );
-  const [index, setIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
+
   const incraseIndex = () => {
     if (data) {
       if (leaving) return;
@@ -91,6 +107,8 @@ function Home() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  console.log(`Home: `, data);
+
   return (
     <Wrapper>
       {isLoading ? (
@@ -120,7 +138,14 @@ function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
-                      $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      whileHover={"hover"}
+                      initial={"normal"}
+                      variants={boxVariants}
+                      $bgPhoto={makeImagePath(
+                        movie.backdrop_path || movie.poster_path,
+                        "w500"
+                      )}
+                      transition={{ type: "tween" }}
                     />
                   ))}
               </Row>
